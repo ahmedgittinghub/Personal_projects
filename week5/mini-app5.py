@@ -1,12 +1,17 @@
 from useful_packages5 import * 
+from sql_packages import * 
 
+import pymysql
 import os
+from dotenv import load_dotenv
 
-orders_list = []
-products_list = []
-couriers_list = []
+connection, cursor = setup_db_connection()
+
+
+
 
 # LOAD orders from orders.csv
+orders_list = []
 open_csv_orders('orders.csv',orders_list)
 
 # CREATE order status list
@@ -35,16 +40,18 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 # # products menu
 # ELSE IF user input is 1:
     elif user_input == '1':
-        os.system('clear')
-        print('welcome to the products menu')
         open_menu = True
         #PRINT product menu options
         menu_options1 = ['Return to main menu','Print product list','Create a new product','Update existing product','Delete existing product']
         enumerated_list(menu_options)
         user_input1 = ''
+        os.system('clear')
+        print('welcome to the products menu')
+        print('\n')
     
 #     GET user input for product menu option
         while  open_menu == True and user_input1 not in ['0','1','2','3','4']:
+            
             enumerated_list(menu_options1)
             user_input1 = input('please insert a choice from 0,1,2,3,4:  ')
 
@@ -62,60 +69,115 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
             elif user_input1 == '1':
                  os.system('clear')
                  # PRINT products list
-                 print('1 ,1')
+                 table_printer(table_name='products')
                  print('\n')
-               
-            
                  user_input1 = ''
-#         GET all products from products table
-#         PRINT products
+
 
 #     # WEEK 5 UPDATE
 #     ELSE IF user input is 2:
             elif user_input1 == '2':
-                os.system('clear')
-                print('1,2')                
-                user_input1 = ''
-#         # CREATE new product
+                 os.system('clear')
+                 check_name = ''
 
-#         GET user input for product name
-#         GET user input for product price
-#         INSERT product into products table
+                 dict1 = {"product_name": "0", "product_price": "0"}
+                 table_printer(table_name='products')
+
+                # GET user input for product name
+                 while dict1["product_name"] == "0" :
+                    dict1["product_name"] = name_insert(dict1["product_name"])
+                    if dict1["product_name"].strip() == '':
+                        dict1["product_name"] = "0"
+                    else:
+                        break
+                 
+                 check_name = product_name_check(dict1['product_name'], check_name)
+                 if check_name == 'yes':
+                     print('Going back to name insert as name inserted already on the list')
+
+                 
+                # GET user input for product price
+                 while dict1["product_price"] == "0" :
+                    dict1["product_price"] = price_insert(dict1["product_price"])
+                    if type(dict1["product_price"]) != float:
+                        dict1["product_price"] = "0"
+                        print('please insert a valid input for price')
+                    else:
+                        break
+                
+                 user_input1 = ''
+
+
 
 #     # WEEK 5 UPDATE
 #     ELSE IF user input is 3:
             elif user_input1 == '3':
                 os.system('clear')
-                print('1,3')                
+
+                dict13 = {"product_name": "0", "product_price": "0"}
+                #PRINT products with their IDs
+                table_printer(table_name = 'products')
+                
+                id_number = ''
+                checker = ''
+                #GET user input for product ID
+                checker = product_id_checker(id_number,checker) 
+                
+                #GET user input for product name
+                while dict13["product_name"] == "0":
+                    dict13["product_name"] = name_insert(dict13["product_name"])
+                    if dict13["product_name"].strip() == '':
+                        print("product will not be changed")
+                        break
+                    elif dict13["product_name"].strip() != '':
+                        product_name_change(id_number,dict13['product_name'])
+
+                #GET user input for product price
+                while dict13["product_price"] == "0":
+                    dict13["product_price"] = price_insert(dict13["product_price"])
+                    if type(dict13["product_price"]) == float :
+                            product_price_change(id_number,dict13['product_price'])
+                            break
+                    #IF any inputs are empty, do not update them
+                    elif dict13["product_price"].strip() == '':
+                        print("product price will not be changed")
+                        break
+
+                    #IF any inputs are empty, do not update them
+                    elif dict13["product_price"].strip() != '' and type(dict13["product_price"]) != float:
+                            print('please insert a vlid input for the price ')
+                            dict13["product_price"] == "0"
+
+
                 user_input1 = ''
-
-
-#         # STRETCH GOAL - UPDATE existing product
             
 
-#         GET all products from products table
-#         PRINT products with their IDs
-#         GET user input for product ID
-
-#         GET user input for product name
-#         GET user input for product price
-
-#         IF any inputs are empty, do not update them
-#         UPDATE properties for product in product table
 
 #     # WEEK 5 UPDATE
 #     ELSE IF user input is 4:
             elif user_input1 == '4':
                 os.system('clear')
-                print('1,4')                
+                #PRINT products with their IDs
+                table_printer(table_name='products')
+                id_number = ''
+                checker = ''
+                #GET user input for product ID
+                checker = product_id_checker(id_number,checker)
+                if checker == 'no':
+                    break
+                elif checker == 'yes':
+                    # DELETE product in products table
+                    delete_product(id_number)
+
+                              
                 user_input1 = ''
 #         # STRETCH GOAL - DELETE product
         
-#         GET all products from products table
-#         PRINT products with their IDs
 
-#         GET user input for product ID
-#         DELETE product in products table
+
+
+
+
     elif user_input == '2':
         os.system('clear')
         

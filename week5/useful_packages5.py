@@ -1,5 +1,6 @@
 import csv
 
+
 def name_insert(name):
     while name == '0':
          name = input("Please insert the name of the order: ")
@@ -314,3 +315,22 @@ def item_filler(listname1,listname2):
                 item1 = '$'
     
     return listname1
+
+
+def id_number_insert(phone):
+         
+         
+         while phone ==  '' :
+            phone = input('please insert a suitable id number ')
+            if len(phone.strip()) != 0:
+                if phone.isdigit() == False or len(phone.strip()) != 11 :
+                    print('invalid input, please ensure you insert the right phone number')
+                    phone = '0'
+                else:
+                    break
+            else:
+                break
+    
+         return phone           
+
+
