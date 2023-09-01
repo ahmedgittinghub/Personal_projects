@@ -67,10 +67,11 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 #     # WEEK 5 UPDATE
 #     ELSE IF user input is 1:
             elif user_input1 == '1':
+                 print('\n')
                  os.system('clear')
                  # PRINT products list
                  table_printer(table_name='products')
-                 print('\n')
+                 
                  user_input1 = ''
 
 
@@ -89,11 +90,12 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                     if dict1["product_name"].strip() == '':
                         dict1["product_name"] = "0"
                     else:
-                        break
+                        check_name = product_name_check(dict1["product_name"], check_name)
+                        if check_name == 'yes':
+                            dict1['product_name'] = '0'
+                        elif check_name == 'no':
+                            break
                  
-                 check_name = product_name_check(dict1['product_name'], check_name)
-                 if check_name == 'yes':
-                     print('Going back to name insert as name inserted already on the list')
 
                  
                 # GET user input for product price
@@ -103,7 +105,7 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                         dict1["product_price"] = "0"
                         print('please insert a valid input for price')
                     else:
-                        break
+                        add_product(dict1["product_name"], dict1["product_price"])
                 
                  user_input1 = ''
 
@@ -118,36 +120,51 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                 #PRINT products with their IDs
                 table_printer(table_name = 'products')
                 
-                id_number = ''
+                id_number = '$'
                 checker = ''
+                name_checker = ''
                 #GET user input for product ID
-                checker = product_id_checker(id_number,checker) 
-                
-                #GET user input for product name
-                while dict13["product_name"] == "0":
-                    dict13["product_name"] = name_insert(dict13["product_name"])
-                    if dict13["product_name"].strip() == '':
-                        print("product will not be changed")
-                        break
-                    elif dict13["product_name"].strip() != '':
-                        product_name_change(id_number,dict13['product_name'])
+               
+                while id_number == '$' :
+                    id_number , checker = id_number_check_products_table(id_number,checker)
+                    if checker == 'no':
+                        id_number = '$'
 
-                #GET user input for product price
-                while dict13["product_price"] == "0":
-                    dict13["product_price"] = price_insert(dict13["product_price"])
-                    if type(dict13["product_price"]) == float :
+                if checker == 'no change':
+                    print('No change desired going back to main menu')
+                    
+
+                elif checker == 'yes':
+                    print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
+
+                    #GET user input for product name
+                    while dict13["product_name"] == "0":
+                        dict13["product_name"] = name_insert(dict13["product_name"])
+                        if dict13["product_name"].strip() == '':
+                            print("product will not be changed")
+                            break
+                        elif dict13["product_name"].strip() != '':
+                            name_checker = product_name_check(dict13["product_name"], name_checker)
+                            if name_checker == 'yes':
+                                dict13['product_name'] = '0'
+                            elif name_checker == 'no':
+                                product_name_change(id_number,dict13['product_name'])
+
+
+                    #GET user input for product price
+                    while dict13["product_price"] == "0":
+                        dict13["product_price"] = price_insert(dict13["product_price"])
+                        if type(dict13["product_price"]) == float :
                             product_price_change(id_number,dict13['product_price'])
                             break
                     #IF any inputs are empty, do not update them
-                    elif dict13["product_price"].strip() == '':
-                        print("product price will not be changed")
-                        break
-
-                    #IF any inputs are empty, do not update them
-                    elif dict13["product_price"].strip() != '' and type(dict13["product_price"]) != float:
+                        elif dict13["product_price"].strip() == '':
+                            print("product price will not be changed")
+                            break
+                        #IF any inputs are empty, do not update them
+                        elif dict13["product_price"].strip() != '' and type(dict13["product_price"]) != float:
                             print('please insert a vlid input for the price ')
                             dict13["product_price"] == "0"
-
 
                 user_input1 = ''
             
@@ -159,17 +176,20 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                 os.system('clear')
                 #PRINT products with their IDs
                 table_printer(table_name='products')
-                id_number = ''
+                id_number = '$'
                 checker = ''
                 #GET user input for product ID
-                checker = product_id_checker(id_number,checker)
-                if checker == 'no':
-                    break
+                while id_number == '$' :
+                    id_number , checker = id_number_check_products_table(id_number,checker)
+                    if checker == 'no':
+                        id_number = '$'
+
+                if checker == 'no change':
+                    print('NO ENTRY WAS TAKEN GOING BACK TO MAIN MENU')
+                    
                 elif checker == 'yes':
                     # DELETE product in products table
-                    delete_product(id_number)
-
-                              
+                    delete_product(id_number)               
                 user_input1 = ''
 #         # STRETCH GOAL - DELETE product
         
@@ -211,10 +231,11 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 
 
             elif user_input2 == '1':
+                print('\n')
                 os.system('clear')
-                print('2,1')  
+                table_printer(table_name='couriers')
+                
                 user_input2 = ''
-                #     ELIF user inputs 1:
 #         GET all couriers from couriers table
 #         PRINT couriers
 

@@ -317,20 +317,20 @@ def item_filler(listname1,listname2):
     return listname1
 
 
-def id_number_insert(phone):
+def id_number_insert(number):
          
          
-         while phone ==  '' :
-            phone = input('please insert a suitable id number ')
-            if len(phone.strip()) != 0:
-                if phone.isdigit() == False or len(phone.strip()) != 11 :
+         while number ==  '$' :
+            number = input('please insert a suitable id number ')
+            if len(number.strip()) != 0:
+                if number.isdigit() == False :
                     print('invalid input, please ensure you insert the right phone number')
-                    phone = '0'
+                    number = '$'
                 else:
                     break
             else:
                 break
     
-         return phone           
+         return number           
 
 

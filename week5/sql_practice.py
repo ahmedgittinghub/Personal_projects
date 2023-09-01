@@ -1,6 +1,7 @@
 import pymysql
 import os
 from dotenv import load_dotenv
+from sql_packages import * 
 
 load_dotenv()
 host_name = os.environ.get("mysql_host")
@@ -38,14 +39,14 @@ def setup_db_connection(host = host_name, user = user_name, password = user_pass
 connection, cursor = setup_db_connection()
 
 
-print('Selecting all records...')
-# TODO Add code here to select all the records
-cursor.execute('SELECT * FROM products')
-rows = cursor.fetchall()
+# print('Selecting all records...')
+# # TODO Add code here to select all the records
+# cursor.execute('SELECT * FROM products')
+# rows = cursor.fetchall()
 
-products_dict = {'product_id':'','product_name':'', 'product_price':''}
+# products_dict = {'product_id':'','product_name':'', 'product_price':''}
 
-check_dict = {'product_name':'', 'product_price':''}
+# check_dict = {'product_name':'', 'product_price':''}
 
 
 
@@ -61,11 +62,11 @@ check_dict = {'product_name':'', 'product_price':''}
 # # Commit the record
 # connection.commit()
 
-product_add = {'product_name':'Dr pepper', 'product_price':'0.8'}
+# product_add = {'product_name':'Dr pepper', 'product_price':'0.8'}
 
-query="select * from products where product_Name = 'Dr pepper'"
+# query="select * from products where product_Name = 'Dr pepper'"
 
-print(cursor.execute(query))
+# print(cursor.execute(query))
 
 
 # print('Displaying all records...')
@@ -83,101 +84,116 @@ print(cursor.execute(query))
 
 
 # to print what you want 
-query = "select * from products where product_Name = 'Dr pepper'"
-cursor.execute(query)
+# query = "select * from products where product_Name = 'Dr pepper'"
+# cursor.execute(query)
 
 # Fetch all rows from the result set
-result = cursor.fetchall()
+# result = cursor.fetchall()
 
 # Print the fetched rows
-for row in result:
-    products_dict['product_id'] = row[0]
-    products_dict['product_name'] = row[1]
-    products_dict['product_price'] = row[2]
+# for row in result:
+#     products_dict['product_id'] = row[0]
+#     products_dict['product_name'] = row[1]
+#     products_dict['product_price'] = row[2]
     
-    if products_dict['product_name'] == product_add['product_name']:
-        print('no')
-    else:
-        print('yes')
-    print(row)
+#     if products_dict['product_name'] == product_add['product_name']:
+#         print('no')
+#     else:
+#         print('yes')
+#     print(row)
 # You can also print specific columns from the rows if needed
 # For example: print(row['column_name'])
 
-def product_printer(something):
-    products_dict = {'product_id':'','product_name':'', 'product_price':''}
-    for row in something:
-        products_dict['product_id'] = row[0]
-        products_dict['product_name'] = row[1]
-        products_dict['product_price'] = row[2]
-        print(products_dict)
+# def product_printer(something):
+#     products_dict = {'product_id':'','product_name':'', 'product_price':''}
+#     for row in something:
+#         products_dict['product_id'] = row[0]
+#         products_dict['product_name'] = row[1]
+#         products_dict['product_price'] = row[2]
+#         print(products_dict)
 
 
-query2 = "select * from products"
-cursor.execute(query2)
-result2 = cursor.fetchall()
+# query2 = "select * from products"
+# cursor.execute(query2)
+# result2 = cursor.fetchall()
 
-product_printer(result2)
+# product_printer(result2)
 
-def check_product(something,checker):
-    # to print what you want 
-    query = "select * from products "
-    cursor.execute(query)
-    # Fetch all rows from the result set
-    result = cursor.fetchall()
+# def check_product(something,checker):
+#     # to print what you want 
+#     query = "select * from products "
+#     cursor.execute(query)
+#     # Fetch all rows from the result set
+#     result = cursor.fetchall()
 
-    for row in result:
-        products_dict['product_id'] = row[0]
-        products_dict['product_name'] = row[1]
-        products_dict['product_price'] = row[2]
+#     for row in result:
+#         products_dict['product_id'] = row[0]
+#         products_dict['product_name'] = row[1]
+#         products_dict['product_price'] = row[2]
     
-        if products_dict['product_name'].replace(' ','') == something.replace(' ',''):
-            print('product already exist, cant be added')
-            checker = 'no'
-            break
-        else:
-            checker = 'yes'
+#         if products_dict['product_name'].replace(' ','') == something.replace(' ',''):
+#             print('product already exist, cant be added')
+#             checker = 'no'
+#             break
+#         else:
+#             checker = 'yes'
     
-    return checker
+#     return checker
 
 
-def add_product(name,price):
-    print('Inserting new record...')
-    # Insert a new record
-    sql = """
-        INSERT INTO products (product_Name, product_price) 
-        VALUES (%s, %s)
-        """
-    data_values = (name, price)
-    cursor.execute(sql, data_values)
-    # Commit the record
-    connection.commit()
+# def add_product(name,price):
+#     print('Inserting new record...')
+#     # Insert a new record
+#     sql = """
+#         INSERT INTO products (product_Name, product_price) 
+#         VALUES (%s, %s)
+#         """
+#     data_values = (name, price)
+#     cursor.execute(sql, data_values)
+#     # Commit the record
+#     connection.commit()
 
 
-def product_id_checker(something, checker):
+# def product_id_checker(something, checker):
 
-    while something.isdigit() == False:
-        something = input('please insert a the ID number of the item you wish to change: ')
-         # to print what you want 
-        query = "select product_ID from products "
-        cursor.execute(query)
-    # Fetch all rows from the result set
-        result = cursor.fetchall()
+#     while something.isdigit() == False:
+#         something = input('please insert a the ID number of the item you wish to change: ')
+#          # to print what you want 
+#         query = "select product_ID from products "
+#         cursor.execute(query)
+#     # Fetch all rows from the result set
+#         result = cursor.fetchall()
 
-    for row in result:
+#     for row in result:
     
-        if row == int(something):
-            print('product ID exist')
-            checker = 'yes'
-            break
-        else:
-            print("product ID doesn't exist")
-            checker = 'no'
+#         if row == int(something):
+#             print('product ID exist')
+#             checker = 'yes'
+#             break
+#         else:
+#             print("product ID doesn't exist")
+#             checker = 'no'
     
-    return checker
+#     return checker
 
-def product_name_change(product_id, new_name):
-    query = "UPDATE products SET product_Name = %s WHERE product_ID = %s"
-    cursor.execute(query, (new_name, product_id))
-    connection.commit()
+# def product_name_change(product_id, new_name):
+#     query = "UPDATE products SET product_Name = %s WHERE product_ID = %s"
+#     cursor.execute(query, (new_name, product_id))
+#     connection.commit()
+
+
+table_printer('products')
+id_number = '$'
+checker = 'domdom'
+                
+id_number , checker = id_number_check_products_table(id_number,checker)
+if checker == 'yes':
+    delete_product(id_number)
+
+else:
+    print('left empty no change made')
+
+print(checker)
+print(id_number)
 
 
