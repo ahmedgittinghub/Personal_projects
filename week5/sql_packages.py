@@ -177,16 +177,10 @@ def id_number_check_products_table2(id_number, checker):
 ##### Courier SQL commands
 
 
-def table_printer(table_name):
-    query = f"SELECT * FROM {table_name}"
-    cursor.execute(query)
-    result = cursor.fetchall()
-    for row in result:
-        print(row)
-    print('\n')
 
 
-def product_printer(something):
+
+def courier_printer(something):
     products_dict = {'product_id':'','product_name':'', 'product_price':''}
     for row in something:
         products_dict['product_id'] = row[0]
@@ -195,18 +189,15 @@ def product_printer(something):
         print(products_dict)
 
 
-connection, cursor = setup_db_connection()
 
-
-
-def add_product(name,price):
+def add_courier(name,phone_number):
     print('Inserting new record...')
     # Insert a new record
     sql = """
-        INSERT INTO products (product_Name, product_price) 
+        INSERT INTO couriers (courier_Name, phone_number) 
         VALUES (%s, %s)
         """
-    data_values = (name, price)
+    data_values = (name, phone_number)
     cursor.execute(sql, data_values)
     # Commit the record
     connection.commit()
@@ -248,8 +239,8 @@ def courier_phone_check(phone_number, checker):
     checker = 'no'
     for row in result:
     
-        if row[0].replace(' ','').lower() == phone_number.replace(' ','').lower():
-            print('phone numberalready  exist')
+        if row[0].replace(' ','') == phone_number.replace(' ',''):
+            print('phone number already  exist')
             checker = 'yes'
             break
     if checker == 'no':

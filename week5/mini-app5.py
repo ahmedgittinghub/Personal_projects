@@ -86,13 +86,18 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 
                 # GET user input for product name
                  while dict1["product_name"] == "0" :
+                    # here user is asked for name insert
                     dict1["product_name"] = name_insert(dict1["product_name"])
+                    # resets if left empty, so a name is inserted for the product
                     if dict1["product_name"].strip() == '':
                         dict1["product_name"] = "0"
                     else:
+                        #  check to ensure the new product being added isnt a duplicate
                         check_name = product_name_check(dict1["product_name"], check_name)
+                        #  resets if product name already exist
                         if check_name == 'yes':
                             dict1['product_name'] = '0'
+                        #  doesnt reset if product name exists
                         elif check_name == 'no':
                             break
                  
@@ -101,10 +106,12 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                 # GET user input for product price
                  while dict1["product_price"] == "0" :
                     dict1["product_price"] = price_insert(dict1["product_price"])
+                    # price must be a float value, so that the field is not left empty
                     if type(dict1["product_price"]) != float:
                         dict1["product_price"] = "0"
                         print('please insert a valid input for price')
                     else:
+                        # once a name and a price are obtained the new product is added 
                         add_product(dict1["product_name"], dict1["product_price"])
                 
                  user_input1 = ''
@@ -127,33 +134,46 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                
                 while id_number == '$' :
                     id_number , checker = id_number_check_products_table(id_number,checker)
+                    # if user id doesnt exist the loop will resets and ask for id insert
                     if checker == 'no':
                         id_number = '$'
 
+                # if the insert is left empty the code ends as the user doesnt desire to change anything
                 if checker == 'no change':
                     print('No change desired going back to main menu')
                     
-
+                # this if stament is activated when a correct courier ID is inserted
                 elif checker == 'yes':
                     print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
 
                     #GET user input for product name
                     while dict13["product_name"] == "0":
+                        # the user is asked for a new product name to alter existing product
                         dict13["product_name"] = name_insert(dict13["product_name"])
+
+                        #if name insert is left empty no name taken and product name will be left the same
                         if dict13["product_name"].strip() == '':
                             print("product will not be changed")
                             break
+
+                        #if the name insert is not left empty this elif statment is activated
                         elif dict13["product_name"].strip() != '':
                             name_checker = product_name_check(dict13["product_name"], name_checker)
+                            # this checks if the product name already exists
                             if name_checker == 'yes':
+                                # if the name is in the products table, name insert resets
                                 dict13['product_name'] = '0'
+                                # if the name doesnt exist product name is updated
                             elif name_checker == 'no':
                                 product_name_change(id_number,dict13['product_name'])
 
 
                     #GET user input for product price
                     while dict13["product_price"] == "0":
+                        # the users are asked for a price 
                         dict13["product_price"] = price_insert(dict13["product_price"])
+
+                        # if the price is inserted correctly in float form the price of the product is updated
                         if type(dict13["product_price"]) == float :
                             product_price_change(id_number,dict13['product_price'])
                             break
@@ -161,7 +181,7 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                         elif dict13["product_price"].strip() == '':
                             print("product price will not be changed")
                             break
-                        #IF any inputs are empty, do not update them
+                        #IF input is incorrect sush as letters the code will reset and ask user for price
                         elif dict13["product_price"].strip() != '' and type(dict13["product_price"]) != float:
                             print('please insert a vlid input for the price ')
                             dict13["product_price"] == "0"
@@ -184,6 +204,7 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                     if checker == 'no':
                         id_number = '$'
 
+                # If no Id is inserted no product is deleted 
                 if checker == 'no change':
                     print('NO ENTRY WAS TAKEN GOING BACK TO MAIN MENU')
                     
@@ -231,54 +252,138 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 
 
             elif user_input2 == '1':
+                #GET all couriers from couriers table
+                #PRINT couriers
                 print('\n')
                 os.system('clear')
                 table_printer(table_name='couriers')
                 
                 user_input2 = ''
-#         GET all couriers from couriers table
-#         PRINT couriers
 
+            # CREATE new courier
             elif user_input2 == '2':
                 os.system('clear')
-                print('2,1')  
-                user_input2 = ''  
-#     ELSE IF user input is 2:
-#         # CREATE new courier
+                dict22 = {"name": "0","phone_number":"0"}
+                checker = ''
 
-#         GET user input for courier name
-#         GET user input for courier phone number
-#         INSERT courier into couriers table   
+                # GET user input for courier name
+                while dict22["name"] == "0":
+                    dict22["name"] = name_insert(dict22["name"])
+                    if dict22["name"].strip() == '':
+                        dict22["name"] = "0"
+                    else:
+                        break
+
+                # GET user input for courier phone number
+                while dict22["phone_number"] == '0':
+                    dict22["phone_number"] = phone_number_insert(dict22["phone_number"])
+                    if dict22["phone_number"].replace(' ','').isdigit() == False:
+                         dict22["phone_number"] = '0'
+                    else:
+                        checker = courier_phone_check(dict22['phone_number'],checker)
+                        if checker == 'yes':
+                            dict22['phone_number'] = '0'
+                        elif checker == 'no':
+                            #INSERT courier into couriers table  
+                            add_courier(dict22['name'],dict22['phone_number'])
+                            break
+                 
+                user_input2 = ''  
 
             elif user_input2 == '3':
+                dict23 = {"name": "0","phone_number":"0"}
                 os.system('clear')
-                print('2,3')
+                id_number = '$'
+                checker = ''
+                phone_number_checker = '' 
+
+                table_printer(table_name='couriers')
+
+                #GET user input for courier ID
+                # retrieve courier Id then check if the ID number exists
+                while id_number == '$' :
+                    id_number , checker = id_number_check_couriers_table(id_number,checker)
+                    #  if the Id inserted doesnt exist loop resets and ask for a another insert
+                    if checker == 'no':
+                        id_number = '$'
+                # if no insert is added code breaks and goes back to main menu
+                if checker == 'no change':
+                    print('No change desired going back to main menu')
+                    
+
+                elif checker == 'yes':
+                    print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
+                    
+                    #GET user input for courier name
+                    while dict23['name'] == "0":
+                        dict23["name"] = name_insert(dict23["product_name"])
+                        # if the user left the insert empty name doesnt change
+                        if dict23["name"].strip() == '':
+                            print("product will not be changed")
+                            break
+                        elif dict23["name"].strip() != '':
+                            # ensures names are inserted in the correct format
+                            if dict23['name'].replace(' ','').isalpha() == False:
+                                print('Please insert a valid name with just letters')
+                                # resets if incorrect input is added
+                                dict23['name'] = '0'
+                            else: 
+                                print('Name will be changed')
+                                #Courier name update
+                                courier_name_change(id_number,dict23['name'])
+
+                    
+                    #GET user input for courier phone number
+                    while dict23['phone_number'] == "0":
+                        dict23['phone_number'] = phone_number_insert(dict23['phone_number'])
+                        if dict23["phone_number"].strip() == '':
+                            print("Phone Number will not be changed")
+                            break
+                        elif dict23["phone_number"].strip() != '':
+                            # function checks if the phone number exists
+                            phone_number_checker = courier_phone_check(dict23['phone_number'], phone_number_checker)
+                            if phone_number_checker == 'yes':
+                                # this ensures users don't insert a phone number already in the database
+                                dict23["phone_number"] = '0'
+                            elif phone_number_checker == 'no':
+                                # command that alters the phone number
+                                phone_number_change(id_number, dict23['phone_number'])
+
+                
                 user_input2 = ''       
-#     ELSE IF user input is 3: 
-#         # STRETCH GOAL - UPDATE existing courier
 
-#         GET all couriers from couriers table
-#         PRINT couriers with their IDs
-#         GET user input for courier ID
+                
+                
 
-#         GET user input for courier name
-#         GET user input for courier phone number
 
-#         IF an input is empty, do not update its respective table property
-#         UPDATE properties for courier in courier table
+
+
+
 
             elif user_input2 == '4':
                 os.system('clear')
-                print('2,4')
-                user_input2 = ''   
-#     ELSE IF user input is 4:
-#         # STRETCH GOAL - DELETE courier
+                #PRINT products with their IDs
+                table_printer(table_name='couriers')
+                id_number = '$'
+                checker = ''
+                #GET user input for product ID
+                while id_number == '$' :
+                    # if id number inserted doesnt exist or input is incorrect the insert resets
+                    id_number , checker = id_number_check_products_table(id_number,checker)
+                    if checker == 'no':
+                        id_number = '$'
                 
-#         GET all couriers from couriers table
-#         PRINT courier with their IDs
+                # if no id inserted, code breaks .
+                if checker == 'no change':
+                    print('NO ENTRY WAS TAKEN GOING BACK TO MAIN MENU')
+                    
+                elif checker == 'yes':
+                    # DELETE courier with the id 
+                    delete_courier(id_number)               
+                
 
-#         GET user input for courier ID
-#         DELETE courier in couriers table
+                user_input2 = ''   
+
 
 
 
