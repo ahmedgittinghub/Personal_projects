@@ -182,18 +182,23 @@ connection, cursor = setup_db_connection()
 #     connection.commit()
 
 
-table_printer('products')
-id_number = '$'
-checker = 'domdom'
+# table_printer('products')
+# id_number = '$'
+# checker = 'domdom'
                 
-id_number , checker = id_number_check_products_table(id_number,checker)
-if checker == 'yes':
-    delete_product(id_number)
+# id_number , checker = id_number_check_products_table(id_number,checker)
+# if checker == 'yes':
+#     delete_product(id_number)
 
-else:
-    print('left empty no change made')
+# else:
+#     print('left empty no change made')
 
-print(checker)
-print(id_number)
+# print(checker)
+# print(id_number)
 
 
+list505 = ''
+
+list505 = add_products_to_orders(list505)
+
+print(list505)

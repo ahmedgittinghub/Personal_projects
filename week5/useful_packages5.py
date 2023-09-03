@@ -240,7 +240,7 @@ def open_csv_orders(filename, list_name):
                 "customer_phone": row['customer_phone'].strip(),
                 "courier": int(row['courier']),
                 "status": row['status'].strip(),
-                "items": list(row['items'].strip().replace(',','').replace(' ',''))
+                "items": row['items'].split(',')
             }
             list_name.append(order)
     print('opening orders file')
@@ -256,8 +256,8 @@ def close_csv_orders(filename,list_name):
                     order[items] = ','.join(order[items])   
           writer = csv.writer(output_file)
           writer.writerow(["customer_name", "customer_address","customer_phone","courier","status","items"]) 
-          for order in list_name:
-                order['items'] = ', '.join(order['items'])
+        #   for order in list_name:
+        #         order['items'] = ','.join(order['items'])
 
           for order in list_name:
              writer.writerow([
@@ -266,7 +266,7 @@ def close_csv_orders(filename,list_name):
                  order["customer_phone"],
                  order["courier"],
                  order["status"],
-                 order["items"].strip().replace(' ','').replace(',,',''),
+                 order["items"].replace(',,','').replace(' ',''),
              ])
      print('closing orders file')
      return list_name

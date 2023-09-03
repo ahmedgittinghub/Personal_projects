@@ -140,38 +140,27 @@ def delete_product(product_id):
     cursor.execute(query)
     connection.commit()
 
-def id_number_check_products_table2(id_number, checker):
-    list1 = []
-    while id_number == '$':
-        id_number = input('please insert a the ID number of the item you wish to change: ')
 
-        if id_number.strip() == '':
-            print('ID number was not inserted, leaving menu')
-            checker = 'no change'
+def add_products_to_orders(some_list):
+    basket = []
+    checker = ''
+    product_id = '$'
+    while product_id == '$':
+        product_id, checker = id_number_check_products_table(product_id, checker)
+        if checker == 'no':
+            print('Product doesnt exist')
+            product_id = '$'
+        elif checker == 'no change':
+            print('No Id was inserted')
+            some_list = basket
+            product_id = 'done'
             break
-         # to print what you want 
-        else:
-            if id_number.isdigit() == False:
-                id_number = '$'
-                
-            elif id_number.isdigit() == True:
-                query = "select product_ID from products"
-                cursor.execute(query)
-    # Fetch all rows from the result set
-                result = cursor.fetchall()
-                for row in result:
-                    list1.append(row[0])
-
-                if  int(id_number) in list1:
-                    print('product ID exist')
-                    checker = 'yes'
-                    break
-                elif int(id_number) not in list1:
-                    print("product ID doesn't exist")
-                    checker = 'no'
-                    id_number = '$'
-    return id_number,checker
-
+        elif checker == 'yes':
+            print('product will be added to basket')
+            basket.append(product_id)
+            product_id = '$'
+    
+    return some_list
 # #############
 ########333####
 ##### Courier SQL commands
