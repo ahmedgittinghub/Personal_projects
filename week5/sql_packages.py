@@ -391,3 +391,43 @@ def id_number_check_status_table(id_number, checker):
                     print("status ID doesn't exist")
                     checker = 'no'
     return id_number, checker
+
+
+def one_orders_printer(order_id):
+    query = "SELECT orders.order_ID ,orders.order_Name, orders.order_address, orders.order_postcode, orders.order_city, orders.order_country, orders.phone_number, orders.items_ordered, status_table.status, couriers.courier_Name FROM orders INNER JOIN status_table ON orders.status_ID = status_table.status_ID INNER JOIN couriers ON orders.courier_ID = couriers.courier_ID WHERE order_ID = %s"
+    data_values = (order_id)
+    cursor.execute(query, data_values)
+    result = cursor.fetchall()
+    for row in result:
+        print(row)
+    print('\n')
+
+
+def order_courier_change (order_id, new_courier_id):
+    query = "UPDATE orders SET courier_ID = %s WHERE order_ID = %s"
+    data_values = (new_courier_id, order_id)
+    cursor.execute(query, data_values)
+    connection.commit()
+
+def itemise_items(order_id, variable):
+    query = 'SELECT order_ID, order_Name, items_ordered FROM orders WHERE order_id = %s'
+    data_values = (order_id)
+    cursor.execute(query, data_values)
+    result = cursor.fetchall()
+    variable = ''
+    for row in result:
+        variable = row[2]
+        
+
+    return variable
+
+
+
+
+def orders_table_printer():
+    query = "SELECT orders.order_ID ,orders.order_Name, orders.order_address, orders.order_postcode, orders.order_city, orders.order_country, orders.phone_number, orders.items_ordered, status_table.status, couriers.courier_Name FROM orders INNER JOIN status_table ON orders.status_ID = status_table.status_ID INNER JOIN couriers ON orders.courier_ID = couriers.courier_ID"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    for row in result:
+        print(row)
+    print('\n')

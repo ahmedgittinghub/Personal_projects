@@ -373,9 +373,9 @@ def address_fucntion(something):
           street_name = 0
           emptyy = ''
           while unit_number == 0 :
-            unit_number = input('please give me your Unit Number ').title().strip()
+            unit_number = input('please give me your Unit Number ').title().strip().rstrip().lstrip()
           while street_name == 0 :
-            street_name = input('Please insert your street address ').title().strip()
+            street_name = input('Please insert your street address ').title().strip().rstrip().lstrip()
 
           if unit_number.strip() != emptyy and street_name.strip() :
                  print("houe / flat number and street address was inserted ")

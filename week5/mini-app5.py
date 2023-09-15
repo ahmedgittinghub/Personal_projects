@@ -600,111 +600,181 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
             
 
             elif user_input3 == '4':
+                order_name4 = '0'
+                order_address4 = '0'
+                order_postcode4 = '0'
+                order_city4 = '0'
+                order_country4 = '0'
+                order_phone_number4 = '0'
+                order_courier_id4 = '$'
+                status_id4 = '0'
+                order_items4 = []
+                
                 dict34 = {'customer_name': '0', 'customer_address': '0', 'customer_phone': '0', 'courier': '', 'status': '0', 'items': [ ]}
 
                 os.system('clear')
-                enumerated_list(orders_list)
+                orders_table_printer()
 
-                change_number = ''
+                order_change_number = '$'
+                order_check_number = ''
+                # GET user input for order id
+                while order_change_number  == '$' :
+                    order_change_number , order_check_number = id_number_check_status_table(order_change_number ,order_check_number)
+                    #  if the Id inserted doesnt exist loop resets and ask for a another insert
+                    if order_check_number == 'no':
+                        order_change_number  = '$'
+                # if no insert is added code breaks and goes back to main menu
+                if order_check_number == 'no change':
+                    print('No change desired going back to main menu')
+                    
 
-                print('please insert the number of the order u wish to change')
+                elif order_check_number == 'yes':
+                    print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
 
-                change_number = list_index_number(change_number,orders_list)
-
-                 #customer name
-                while dict34["customer_name"] == '0':
-                    dict34["customer_name"] = name_insert(dict34["customer_name"])
-                    if dict34["customer_name"].strip() == '' :
-                        print('no name was inserted, name wont be changed')
-                    elif dict34["customer_name"].replace(' ','').isalpha() == True:
-                        orders_list[change_number]["customer_name"] = dict34["customer_name"]
-                    else:
-                        print('insert a valid input or leaveit empty ')
+                    #customer name
+                    while order_name4 == '0':
+                        order_name4 = name_insert(order_name4)
+                        if order_name4.strip() == '' :
+                            print('no name was inserted, name wont be changed')
+                        elif order_name4.replace(' ','').isalpha() == True:
+                            order_name_change(order_change_number,order_name4)
+                        else:
+                            print('insert a valid input or leaveit empty ')
                
-                 # customer address
-                while dict34["customer_address"] == "0":
-                    dict34["customer_address"] = ady_getter(dict34["customer_address"])
+                    # customer address
+                    while order_address4 == "0":
+                        order_address4 = address_fucntion(order_address4)
 
-                    if dict34["customer_address"] == "£":
-                        print('address wont be changed')
-                    else:
-                        print('address was changed')
-                        orders_list[change_number]["customer_address"] = dict34["customer_address"]
+                        if order_address4 == "!":
+                            order_address4 = '0'
+                            print('address input is invalid')
+                        elif order_address4 == '':
+                            print('address will not be changed')
+                        else:
+                            order_address_change(order_change_number,order_address4)
+                    
+                    # customer postcode
+                    while order_postcode4 == "0":
+                        order_postcode4  = address_fucntion(order_postcode4)
+
+                        if order_postcode4  == "!":
+                            order_postcode4  = '0'
+                            print('address input is invalid')
+                        elif order_postcode4 == '':
+                            print('address will not be changed')
+                        else:
+                            order_postcode_change(order_change_number,order_postcode4 )
+                    
+                    # customer city
+                    while order_city4 == "0":
+                        order_city4  =  name_insert(order_city4)
+
+                        if order_city4.replace(' ','')  == '':
+                            print('address was not inserted, not change will be added')
+                        elif order_city4.replace(' ','').isalpha() == True:
+                            print('order city will be changed')
+                            order_city_change(order_change_number,order_city4)
+                        else:
+                            order_city4 = '0'
+                            print('insert a correct input or leave it empty')
+
+                    # customer city
+                    while order_country4 == "0":
+                        order_country4  =  name_insert(order_country4)
+
+                        if order_country4.replace(' ','')  == '':
+                            print('address was not inserted, not change will be added')
+                        elif order_country4.replace(' ','').isalpha() == True:
+                            print('order city will be changed')
+                            order_country_change (order_change_number,order_country4)
+                        else:
+                            order_country4 = '0'
+                            print('insert a correct input or leave it empty')
+                            
         
                 # customer phone 
-                while dict34["customer_phone"] == '0':
-                    dict34["customer_phone"] = phone_number_insert(dict34["customer_phone"])
-                    if dict34["customer_phone"].replace(' ','') != '' and dict34["customer_phone"].replace(' ','').isdigit() == False:
-                        print("please leave the field empty or insert 11 digits phone number")
-                        dict34["customer_phone"] = '0'
-             
-                    elif dict34["customer_phone"].replace(' ','').isdigit() == True:
-                        orders_list[change_number]["customer_phone"] = dict34["customer_phone"]
-                    else:
-                        print("phone number won't be changed")
-                        break
+                    while order_phone_number4 == '0':
+                        check_phone4 = ''
+                        order_phone_number4 = phone_number_insert(order_phone_number4)
+                        if order_phone_number4.replace(' ','') == '':
+                            print('phone number was not inserted, phone number will not be changed')
+                        else:
+                            #check if phone number exists
+                            check_phone4 = order_phone_check(order_phone_number4,check_phone4)
+                            if check_phone4 == 'yes':
+                                order_phone_number4 = '0'
+                            elif check_phone4 == 'no':
+                                print("Phone number valid, Thankyou")
+                                order_phone_number_change(order_change_number,order_phone_number4)
+                                break
+                            
+ 
                 
-                #courier
-                table_printer("couriers")
-                courier_id_number = "$"
-                check_courier_id = ''
+                    #courier
+                    table_printer("couriers")
+                    courier_id_number = "$"
+                    check_courier_id = ''
 
-                while courier_id_number == '$' :
-                    courier_id_number, check_courier_id = id_number_check_couriers_table(courier_id_number, check_courier_id)
-                    #  if the Id inserted doesnt exist loop resets and ask for a another insert
-                    if check_courier_id == 'no':
-                        courier_id_number = '$'
+                    while courier_id_number == '$' :
+                        courier_id_number, check_courier_id = id_number_check_couriers_table(courier_id_number, check_courier_id)
+                        #if the Id inserted doesnt exist loop resets and ask for a another insert
+                        if check_courier_id == 'no':
+                            courier_id_number = '$'
                     
                     
-               # if no insert is added, no change will be made 
-                if  check_courier_id == 'no change':
-                        print("Courier won't be changed")
+                    #if no insert is added, no change will be made 
+                    if  check_courier_id == 'no change':
+                            print("Courier won't be changed")
                         
-                # if a courier id that exists is inserted, the existing courier number will be changed.
-                elif check_courier_id == 'yes':
-                    print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
-                    orders_list[change_number]['courier'] = courier_id_number
+                    #if a courier id that exists is inserted, the existing courier number will be changed.
+                    elif check_courier_id == 'yes':
+                        print('Id number exist Please fill in the following fields or leave empty if you dont  want to make a change')
+                        order_courier_change(order_change_number,courier_id_number)
                         
                 
-                print('\n')
-                print('please select from the following options')
-
-                item_options = ['no change','add to items list','delete existing items list and start new one']
-                
-
-
-                item_change_choice = ''
-
-                while item_change_choice not in ['0','1','2']:
-                    os.system('clear')
+                    print('\n')
                     print('please select from the following options')
-                    print('\n')
-                    enumerated_list(item_options)
-                    print('\n')
-                    print(orders_list[change_number])
-                    item_change_choice = input('so whats your choice in regards to the items list?  ')
 
-                    if item_change_choice == '0':
-                        print('no change was added to the items list')
-                        break
+                    item_options = ['no change','add to items list','delete existing items list and start new one']
+                
+
+
+                    item_change_choice = ''
+
+                    while item_change_choice not in ['0','1','2']:
+                        os.system('clear')
+                        print('please select from the following options')
+                        print('\n')
+                        enumerated_list(item_options)
+                        print('\n')
+                        one_orders_printer(order_change_number)
+                        item_change_choice = input('so whats your choice in regards to the items list?  ')
+
+                        if item_change_choice == '0':
+                            print('no change was added to the items list')
+                            break
                     
-                    elif item_change_choice == '1':
-                        table_printer("products")
-                        while bool(dict34['items']) == False:
-                            dict34['items'] = add_products_to_orders(dict34['items'])
+                        elif item_change_choice == '1':
+                            table_printer("products")
+                            new_list1 = []
+                            while bool(new_list1) == False:
+                                new_list1 = add_products_to_orders(new_list1)
+                                new_list1 = ','.join(new_list1)
+                                
 
-                            for items in dict34['items'] :
-                                orders_list[change_number]['items'].append(items)
+                                for items in dict34['items'] :
+                                    orders_list[change_number]['items'].append(items)
                     
                         
-                    elif item_change_choice == '2':
-                        orders_list[change_number]['items'] = []
-                        while bool(orders_list[change_number]['items']) == False:
-                        # while bool(dict34['items']) == False:
-                            table_printer('products')
-                            orders_list[change_number]['items']  = add_products_to_orders(orders_list[change_number]['items'])
-                            print('items list deleted and new items list inserted')
-                            break
+                        elif item_change_choice == '2':
+                            orders_list[change_number]['items'] = []
+                            while bool(orders_list[change_number]['items']) == False:
+                            # while bool(dict34['items']) == False:
+                                table_printer('products')
+                                orders_list[change_number]['items']  = add_products_to_orders(orders_list[change_number]['items'])
+                                print('items list deleted and new items list inserted')
+                                break
+
                 os.system('clear')
                 user_input3 = ''
             

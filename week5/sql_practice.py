@@ -78,8 +78,17 @@ def postcode_function(something):
             something = '!'
          
 
-a = ['1','2','3']
-a = ','.join(a)
+# a = ['1','2','3']
+# a = ','.join(a)
 
+# b = ['4','5','6']
+# b = ','.join(b)
+# c = a + ',' + b
+# print(c)
 
-print(a)
+list1 = ''
+order_id = 1
+list1 = itemise_items(order_id,list1)
+
+print(list1)
+
