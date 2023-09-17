@@ -633,6 +633,7 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
 
                     #customer name
                     while order_name4 == '0':
+                        print('please insert a name for customer order or leave it empty')
                         order_name4 = name_insert(order_name4)
                         if order_name4.strip() == '' :
                             print('no name was inserted, name wont be changed')
@@ -640,9 +641,11 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                             order_name_change(order_change_number,order_name4)
                         else:
                             print('insert a valid input or leaveit empty ')
+                    print('\n')
                
                     # customer address
                     while order_address4 == "0":
+                        print('please insert a new order address or leave it empty if you dont want to add a change')
                         order_address4 = address_fucntion(order_address4)
 
                         if order_address4 == "!":
@@ -652,9 +655,11 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                             print('address will not be changed')
                         else:
                             order_address_change(order_change_number,order_address4)
+                    print('\n')
                     
                     # customer postcode
                     while order_postcode4 == "0":
+                        print('please insert a new postcode for the order or leave it empty if you dont want to add a change it')
                         order_postcode4  = address_fucntion(order_postcode4)
 
                         if order_postcode4  == "!":
@@ -666,6 +671,7 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                             order_postcode_change(order_change_number,order_postcode4 )
                     
                     # customer city
+                    print('please insert a new order city location or leave it empty if you dont want to add a change')
                     while order_city4 == "0":
                         order_city4  =  name_insert(order_city4)
 
@@ -677,9 +683,11 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                         else:
                             order_city4 = '0'
                             print('insert a correct input or leave it empty')
+                    print('\n')
 
-                    # customer city
+                    # customer country
                     while order_country4 == "0":
+                        print('please insert a new order country or leave it empty if you dont want to add a change')
                         order_country4  =  name_insert(order_country4)
 
                         if order_country4.replace(' ','')  == '':
@@ -690,10 +698,12 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                         else:
                             order_country4 = '0'
                             print('insert a correct input or leave it empty')
+                    print('\n')
                             
         
                 # customer phone 
                     while order_phone_number4 == '0':
+                        print('please insert a new phone number for the order or leave it empty if you dont want to add a change')
                         check_phone4 = ''
                         order_phone_number4 = phone_number_insert(order_phone_number4)
                         if order_phone_number4.replace(' ','') == '':
@@ -756,24 +766,26 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
                     
                         elif item_change_choice == '1':
                             table_printer("products")
+                            existing_items = ''
                             new_list1 = []
+                            existing_items = itemise_items(order_change_number,existing_items)
                             while bool(new_list1) == False:
                                 new_list1 = add_products_to_orders(new_list1)
                                 new_list1 = ','.join(new_list1)
-                                
-
-                                for items in dict34['items'] :
-                                    orders_list[change_number]['items'].append(items)
+                                existing_items = existing_items + ',' + new_list1
+                            
+                            order_items_change(order_change_number, new_list1)
                     
                         
                         elif item_change_choice == '2':
-                            orders_list[change_number]['items'] = []
-                            while bool(orders_list[change_number]['items']) == False:
-                            # while bool(dict34['items']) == False:
+                            new_list2 = []
+                            while bool(new_list2) == False:
                                 table_printer('products')
-                                orders_list[change_number]['items']  = add_products_to_orders(orders_list[change_number]['items'])
-                                print('items list deleted and new items list inserted')
-                                break
+                                new_list2 = add_products_to_orders(new_list2)
+                                
+                                new_list2 = ','.join(new_list2)
+                            order_items_change(order_change_number, new_list2)
+                                
 
                 os.system('clear')
                 user_input3 = ''
@@ -781,12 +793,24 @@ while  cafe_open == True and user_input not in ['0','1','2','3']:
             
             elif user_input3 == '5':
                 os.system('clear')
-                enumerated_list(orders_list)
-                del_choice = ''
-                del_choice = list_index_number(del_choice, orders_list)
-
-                orders_list.pop(del_choice)
-                enumerated_list(orders_list)
+                orders_table_printer()
+                order_id_number = '$'
+                checker = ''
+                #GET user input for order ID
+                while order_id_number == '$' :
+                    # if id number inserted doesnt exist or input is incorrect the insert resets
+                    order_id_number , checker = id_number_check_orders_table (order_id_number, checker)
+                    if checker == 'no':
+                        order_id_number = '$'
+                
+                # if no id inserted, code breaks .
+                if checker == 'no change':
+                    print('NO Entry was taken, no order will be lated.')
+                    
+                elif checker == 'yes':
+                    # DELETE courier with the id 
+                    delete_order(order_id_number)               
+        
                 user_input3 = ''
 
 

@@ -9,16 +9,25 @@ database_name = os.environ.get("mysql_db")
 user_name = os.environ.get("mysql_user")
 user_password = os.environ.get("mysql_pass")
 
-def setup_db_connection(host = host_name, user = user_name, password = user_password , database = database_name):
+def setup_db_connection():
+    # connection = ''
+    # cursor = ''
     try:
-        connection = pymysql.connect(host = host_name, user = user_name, password = user_password , database = database_name)
+        connection = pymysql.connect(
+            host=host_name,
+            user=user_name,
+            password=user_password,
+            database=database_name
+        )
         cursor = connection.cursor()
-        print("We connected!")
+        print("Connected successfully!")
 
     except Exception as ex:
-        print('Failed to:' , ex)
+        print('Failed to connect:', ex)
 
     return connection, cursor
+
+
 
 connection, cursor = setup_db_connection()
 
@@ -28,7 +37,6 @@ def table_printer(table_name):
     result = cursor.fetchall()
     for row in result:
         print(row)
-    print('\n')
 
 # #############
 ########333####
@@ -417,7 +425,6 @@ def itemise_items(order_id, variable):
     variable = ''
     for row in result:
         variable = row[2]
-        
 
     return variable
 
@@ -431,3 +438,4 @@ def orders_table_printer():
     for row in result:
         print(row)
     print('\n')
+
