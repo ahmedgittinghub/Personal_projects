@@ -47,6 +47,10 @@ Option3 the orders area now has a new feature in which each order has a items se
 week 5 the mini app works exactly the same but this time data is being imported and exported from a sql database. exactly the same features but imported and exported from sql database.
 
 
+# where-have-you-bean
+ETL project. CSV sales dataset is first inserted into AWS S3 bucket, this triggers a lambda function for data extraction. The data is then transformed into normalized tables, loaded into Amazon redshift and established a connection to grafana for versatile data visualization.
+
+
 
 
 
