@@ -1,0 +1,325 @@
+#Grafana Graphs
+
+# **Worst selling products** (can do best selling by changing ASC to DESC)
+
+SELECT p.product_name,
+SUM(od.quantity) AS total_quantity_sold
+FROM order_data od
+JOIN products p ON od.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY total_quantity_sold ASC
+LIMIT 5;
+
+
+
+# Lowest sales time (24-hour) (can do busiest sales time by changing asc to desc)
+
+SELECT EXTRACT(HOUR FROM date_and_time_id) AS sale_hour,
+COUNT(*) AS num_sales
+FROM transactions
+GROUP BY sale_hour
+ORDER BY num_sales ASC
+LIMIT 1;
+
+
+
+# Which products combinations are sold the most -Han
+
+SELECT 
+p1.product_name AS product_1, 
+p2.product_name AS product_2, 
+COUNT(*) AS total_sales 
+FROM 
+order_data od1 
+JOIN products p1 ON od1.product_id = p1.product_id 
+JOIN order_data od2 ON od1.transaction_id = od2.transaction_id AND od1.product_id < 	od2.product_id 
+JOIN products p2 ON od2.product_id = p2.product_id 
+GROUP BY 
+p1.product_name, 
+p2.product_name 
+ORDER BY 
+total_sales DESC 
+LIMIT 10; 
+
+
+
+#Total transactions per Hour – Entire UK  -Han
+
+SELECT 
+TO_CHAR(EXTRACT(HOUR FROM date_and_time_id), 'FM00') AS hour_of_day, 
+ 	COUNT(*) AS total_transactions 
+FROM 
+transactions 
+GROUP BY 
+hour_of_day 
+ORDER BY 
+    	hour_of_day; 
+
+
+
+# Most popular product per store and its quantity: -Han
+
+WITH product_sales AS ( 
+SELECT 
+        p.branch_id, 
+        od.product_id, 
+        SUM(od.quantity) AS total_quantity_sold 
+    FROM 
+        products AS p 
+    JOIN 
+        order_data AS od ON p.product_id = od.product_id 
+    JOIN 
+        transactions AS t ON od.transaction_id = t.transaction_id 
+    GROUP BY 
+        p.branch_id, od.product_id 
+) 
+SELECT 
+    b.branch_name, 
+    p.product_name, 
+    ps.total_quantity_sold 
+FROM 
+    product_sales AS ps 
+JOIN 
+    branches AS b ON ps.branch_id = b.branch_id 
+JOIN 
+    products AS p ON ps.product_id = p.product_id 
+WHERE 
+    ps.total_quantity_sold = ( 
+        SELECT 
+            MAX(total_quantity_sold) 
+        FROM 
+            product_sales 
+        WHERE 
+            branch_id = ps.branch_id 
+    ); 
+
+
+
+
+# Sales distribution per Branch of a specific product 
+
+SELECT
+    b.branch_name AS store,
+    SUM(od.quantity) AS total_sales
+FROM
+    branches b
+JOIN
+    products p ON b.branch_id = p.branch_id
+JOIN
+    order_data od ON p.product_id = od.product_id
+WHERE
+    p.product_name = 'Insert product name here'
+GROUP BY
+    b.branch_name
+ORDER BY
+    store;
+
+
+
+
+
+# Total transactions per day of a specific product 
+
+SELECT
+    TO_CHAR(DATE_TRUNC('day', t.date_and_time_id), 'Day') AS sales_day,
+    SUM(od.quantity) AS total_sales
+FROM
+    products p
+JOIN
+    order_data od ON p.product_id = od.product_id
+JOIN
+    transactions t ON od.transaction_id = t.transaction_id
+WHERE
+    p.product_name = 'Insert product name here'
+GROUP BY
+    sales_day
+ORDER BY
+    MIN(t.date_and_time_id);
+
+
+
+
+# total no. of transationcs of a specific product 
+SELECT
+    SUM(od.quantity) AS total_sales
+FROM
+    products p
+JOIN
+    order_data od ON p.product_id = od.product_id
+WHERE
+    p.product_name = Insert product name here';
+
+
+
+
+
+#Total profits from a specific product
+
+SELECT
+    SUM(p.product_price * od.quantity) AS total_profits
+FROM
+    products p
+JOIN
+    order_data od ON p.product_id = od.product_id
+WHERE
+    p.product_name = 'Insert product name here';
+
+
+#what percetage of proofits a specifc product is
+WITH TotalProfits AS (
+    SELECT
+        SUM(p.product_price * od.quantity) AS total_profits
+    FROM
+        products p
+    JOIN
+        order_data od ON p.product_id = od.product_id
+    WHERE
+        p.product_name = 'Large Chai latte'
+),
+TotalUKProfits AS (
+    SELECT
+        SUM(t.total_price) AS total_uk_profits
+    FROM
+        transactions t
+    JOIN
+        order_data od ON t.transaction_id = od.transaction_id
+    JOIN
+        products p ON od.product_id = p.product_id
+    WHERE
+        p.product_name = 'Insert product name here'
+)
+SELECT
+    (tp.total_profits / tup.total_uk_profits * 100) AS percentage_of_profits
+FROM
+    TotalProfits tp
+CROSS JOIN
+    TotalUKProfits tup;
+
+
+
+
+
+#sales per hour on a specific day in am/pm format of a specific product
+
+SELECT
+    CASE
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 9 THEN '9am'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 10 THEN '10am'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 11 THEN '11am'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 12 THEN '12pm'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 13 THEN '1pm'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 14 THEN '2pm'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 15 THEN '3pm'
+        WHEN EXTRACT(HOUR FROM date_and_time_id) = 16 THEN '4pm'
+    END AS hour_of_day,
+    SUM(od.quantity) AS total_sales
+FROM
+    products p
+JOIN
+    order_data od ON p.product_id = od.product_id
+JOIN
+    transactions t ON od.transaction_id = t.transaction_id
+WHERE
+    p.product_name = 'Insert product name here'
+    AND EXTRACT(DOW FROM t.date_and_time_id) = 5 -- 5 corresponds to Friday # can remove this to do all days
+GROUP BY
+    hour_of_day
+ORDER BY
+    MIN(EXTRACT(HOUR FROM date_and_time_id));
+
+
+
+
+
+#total sales per branch
+
+SELECT b.branch_name, SUM(t.total_price) AS total_sales
+FROM transactions t
+JOIN branches b ON t.branch_id = b.branch_id
+GROUP BY b.branch_name
+ORDER BY total_sales DESC;
+
+
+
+
+
+#total tramsactions per branch
+
+SELECT
+    b.branch_name,
+    COUNT(*) AS total_transactions
+FROM
+    branches b
+LEFT JOIN
+    transactions t ON b.branch_id = t.branch_id
+GROUP BY
+    b.branch_name
+ORDER BY total_transactions DESC;
+
+#average customer spend
+SELECT
+    b.branch_name,
+    AVG(t.total_price) AS average_spend
+FROM
+    transactions t
+JOIN
+    branches b ON t.branch_id = b.branch_id
+GROUP BY
+    b.branch_name
+ORDER BY average_spend DESC;
+
+
+
+
+
+#most popular product per branch
+
+WITH product_sales AS ( 
+SELECT 
+        p.branch_id, 
+        od.product_id, 
+        SUM(od.quantity) AS total_quantity_sold 
+    FROM 
+        products AS p 
+    JOIN 
+        order_data AS od ON p.product_id = od.product_id 
+    JOIN 
+        transactions AS t ON od.transaction_id = t.transaction_id 
+    GROUP BY 
+        p.branch_id, od.product_id 
+) 
+SELECT 
+    b.branch_name, 
+    p.product_name, 
+    ps.total_quantity_sold 
+FROM 
+    product_sales AS ps 
+JOIN 
+    branches AS b ON ps.branch_id = b.branch_id 
+JOIN 
+    products AS p ON ps.product_id = p.product_id 
+WHERE 
+    ps.total_quantity_sold = ( 
+        SELECT 
+            MAX(total_quantity_sold) 
+        FROM 
+            product_sales 
+        WHERE 
+            branch_id = ps.branch_id 
+    ); 
+
+
+
+
+#payment method distribution
+
+SELECT
+    p.payment_method,
+    COUNT(*) AS total_sales
+FROM
+    transactions t
+JOIN
+    payments p ON t.payment_id = p.payment_id
+GROUP BY
+    p.payment_method;
+

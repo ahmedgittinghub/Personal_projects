@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Brew-Tea-Full template to deploy an ETL lambda which is triggered by an S3 event.
+
+Parameters:
+  BucketNameRawData:
+    Type: String
+    Description: Enter the name of S3 bucket you wish to create.
+    Default: brew-tea-full-raw-data
+  NetworkStackName:
+    Type: String
+    Default: project-networking
+    Description: Network stack with VPC containing Redshift instance
+  SSMParameterName:
+    Type: String
+    Default: brew_tea_full_redshift_settings
+    Description: Name of the SSM parameter to use to connect to Redshift
+
+Resources:
+  EtlLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: brew-tea-full-etl-lambda
+      Runtime: python3.9
+      Handler: sample_lambda_code.lambda_handler
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/lambda-execution-role'
+      Timeout: 900
+      ReservedConcurrentExecutions: 10
+      Code: ./src
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-VPCSGID'
+        SubnetIds:
+          - Fn::ImportValue:
+              !Sub '${NetworkStackName}-PrivateSubnet0ID'
+      Environment:
+        Variables:
+          SSM_PARAMETER_NAME: !Ref SSMParameterName
+
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    DependsOn:
+      - S3BucketPermission
+    Properties:
+      BucketName: !Ref BucketNameRawData
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt EtlLambdaFunction.Arn
+
+  S3BucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref EtlLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub "arn:aws:s3:::${BucketNameRawData}"

@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  where-have-you-bean deployment bucket for CF files + Lambda zips
+
+Parameters:
+  BucketNameDeployment:
+    Type: String
+    Description: where-have-you-bean-deployment-bucket #change this
+    Default: where-have-you-bean-deployment-bucket #change this
+
+Resources:
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref BucketNameDeployment
+      PublicAccessBlockConfiguration:
+            BlockPublicAcls: True
+            BlockPublicPolicy: True
+            IgnorePublicAcls: True
+            RestrictPublicBuckets: True
