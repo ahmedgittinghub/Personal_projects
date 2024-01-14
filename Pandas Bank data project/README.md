@@ -1,0 +1,4 @@
+
+
+
+This project focuses on utilizing pandas to analyze data from a file containing information on five financial institutions: Morgan Stanley, J.P. Morgan, Wells Fargo, Citi Bank, and Goldman Sachs. The dataset covers stock prices for each financial institution from 2006 to 2016. Unfortunately, the visuals can only be observed within the Jupyter Notebook environment. Therefore, I will be completing the project in Jupyter Notebook rather than a standard text file. This decision is due to limitations in the laptop's hardware, as it is not sufficiently powerful to run the visuals through the terminal.
