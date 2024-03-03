@@ -4,6 +4,8 @@ import datetime
 from pandas_datareader import data
 import seaborn as sns 
 
+import matplotlib.pyplot as plt
+
 
 
 
@@ -107,4 +109,11 @@ def displot_graph(date1,date2,dataframe,bankname):
         returns_df[stock_ticker] = returns
     sns.displot(returns_df.loc[date1:date2][bankname],color='green',bins=100)
     
+
+# This function creates a plot for the close price of each firm of over the whole period.
+def close_price(dataframe):
+    tickers = ['BAC', 'C', 'GS', 'JPM', 'MS', 'WFC']
+    for tick in tickers:
+        dataframe[tick]['Close'].plot(figsize=(12,4),label=tick)
+    plt.legend()
 
