@@ -54,7 +54,7 @@ list_of_returns = returns_calculator(tickers, dates2, close_df, open_df, list_of
 
 
 print('\n')
-print(f'The following analysis is for the s&p 500 stocks from the {dates2[0]} to {dates2[4]}')
+print(f'The following analysis is for the s&p 500 stocks from  {dates2[0]} to {dates2[4]}')
 # Creating a dataframe of the returns data 
 returns_df = pd.DataFrame.from_dict(list_of_returns)
 
