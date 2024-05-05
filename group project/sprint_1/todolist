@@ -1,4 +1,0 @@
-update banana to specify branch id instead of location directly ?? 
-
-update big_list so it has branch id instead of branch name
-fix products table so it shows branch id not name
