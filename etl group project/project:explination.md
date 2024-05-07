@@ -13,7 +13,7 @@ This focuses on developing fnctions to extract data from the csv files and load 
 ## Sprint 2:
 This sprint is broken down into two phases:
    - phase 1: shifts the project from a MYSQL database to postgreSQL Database, this is done to allow a esier migartion prosses to aws redshift.
-   - phase 2 : excutes the transition of the etl process in which it consists of code to extract the etl proccess on AWS.
+   - phase 2 : excutes the transition of the etl process in which it consists of code to extract the etl proccess AND load it to a  AWS redshift database.
 
 
 

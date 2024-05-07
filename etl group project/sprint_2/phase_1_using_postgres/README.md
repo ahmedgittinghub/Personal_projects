@@ -1,4 +1,3 @@
-
 ## Introduction
 
 This section is based upon sprint one but with a distinct diffrence, that diffrence being that in this phase we've moved the project to be based on a postgresql as opposed to Mysql.
