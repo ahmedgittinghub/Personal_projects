@@ -1,19 +1,18 @@
-# etl group project
+# ETL Group Project
 
 ## Introduction
-This project aims to automate the etl process for a fictional cafe, where data comes in as a csv file and is instantly broken down and loaded into Normalised tables into a database.
+This project aims to automate the ETL process for a fictional cafe, where data is received in CSV format and instantly transformed and loaded into normalized tables in a database.
 
 ## Overview
-This project is broken up into two sprints.
+The project is divided into two sprints.
 
 ## Sprint 1:
-This focuses on developing fnctions to extract data from the csv files and load them up into a local MYSQL database.
-
+This sprint focuses on developing functions to extract data from CSV files and load them into a local MySQL database.
 
 ## Sprint 2:
-This sprint is broken down into two phases:
-   - phase 1: shifts the project from a MYSQL database to postgreSQL Database, this is done to allow a esier migartion prosses to aws redshift.
-   - phase 2 : excutes the transition of the etl process in which it consists of code to extract the etl proccess AND load it to a  AWS redshift database.
+Sprint 2 is divided into two phases:
+   - Phase 1: Shifts the project from a MySQL database to a PostgreSQL Database, facilitating easier migration to AWS Redshift.
+   - Phase 2: Executes the transition of the ETL process, involving code to extract and load data into an AWS Redshift database.
 
 
 

@@ -87,4 +87,9 @@ print("The following list of stocks is the most volatile stocks:")
 
 volatility_df = volatility_df.sort_values(by='Stock_Volatility', ascending=False)
 
+
 print(volatility_df.head(5))
+
+print('\n')
+print('\n')
+print('\n')

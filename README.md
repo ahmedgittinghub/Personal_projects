@@ -47,3 +47,12 @@ week 5 the mini app works the same, but this time data is being imported and exp
 # group project
 ETL project. CSV sales dataset is first inserted into AWS S3 bucket, this triggers a lambda function for data extraction. The data is then transformed into normalized tables, loaded into Amazon redshift and established a connection to Grafana for versatile data visualization.
 
+# Problem solving 
+This is me taking on a series of code challenges from leet code.
+
+# S&P 500
+This is a script which creates a summarised analysis of S&P 500 Over the past  5 days from when the script is run.
+
+# Pandas Finance project 
+This project aims to build familiarity with the pandas package. It extracts data from a file and creates informed analysis based on the data. The dataset consists of stock share prices from five financial institutions
+

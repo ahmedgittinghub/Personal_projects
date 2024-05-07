@@ -1,40 +1,44 @@
-
 ## Introduction
 
-This section is based upon sprint one but with a distinct diffrence, that diffrence being that in this phase we've moved the project to be based on a postgresql as opposed to Mysql.
+This section marks a transition from sprint one to a new phase. In this phase, the project has shifted its database foundation from a local database to AWS Redshift.
 
 ## Overview
-This sprint focuses on nigrating the previous sprint into a postgreSQL database.
 
-## Files and purpose
-- chesterfield_25-08-2021_09-00-00.csv : This file constains the sales data written in csv format which will be extracted and loaded into a postgreSQL database.
-- cloud_formation.yml: This file written in yml format creates a AWS S3 bucket, Attaches a IAM policy then assocites triggers that trigger tha lambda function.
-- deployment-bucket-stack.yml: This files creates a S3 bucket and attaches the IAM policy. The bucket will contain the cloud formation files and the lambda files.
-- docker-compose.ymL: 
-- install.sh : This contains a shell script which automates the luanch and creation of the etl pipeline.
-- requirements-lambda.txt: this file contains  functions and code to extract and clean data from the csv files into python.
-- requirements.txt: contains all code needed to load the data extract from csv files into a postgreSQL database.
-- sql_for_grafana: This contains queries that can be wrriten in redshift or grafana to view sales data.
-- test-lambda.sh: This is a shell script used to test the ETL pipeline once created. it will insert a csv file into the bucket which triggerts the lamdafunction to breakdown the data and load it up into etl pipeline.
-- .gitignore: This file specifes functionality for git directory, it specififes to to git directory what files to ignore and what files to save when updating.
-- src: 
-    1. .gitignore: has the same functionality as the oner prior.
-    2. data_utils.py : This contains all the python functions written to extract data from csv file.
-    3. sql_utils.py : This contains all python functions to load the data into tables on AWS redshift.
-    4. lambda_funtion.py : This contains the lambda handeler which serves as the entry point for the code and then also executes the code.
+This sprint primarily focuses on migrating the functionality developed in the previous sprint to a PostgreSQL database, particularly AWS Redshift.
+
+## Files and Purpose
+
+- `chesterfield_25-08-2021_09-00-00.csv`: Contains sales data in CSV format to be extracted and loaded into a PostgreSQL database.
+- `cloud_formation.yml`: YAML file that creates an AWS S3 bucket, attaches an IAM policy, and associates triggers to execute a lambda function.
+- `deployment-bucket-stack.yml`: Creates an S3 bucket and attaches an IAM policy. This bucket will contain the CloudFormation files and the lambda files.
+- `docker-compose.yml`: File for setting up Docker containers.
+- `install.sh`: Shell script automating the launch and creation of the ETL pipeline.
+- `requirements-lambda.txt`: Lists Python dependencies for the lambda function.
+- `requirements.txt`: Lists all dependencies needed to load data from CSV files into a PostgreSQL database.
+- `sql_for_grafana`: Contains queries for Redshift or Grafana to visualize sales data.
+- `test-lambda.sh`: Shell script to test the ETL pipeline. Inserts a CSV file into the bucket, triggering the lambda function to process and load data into the ETL pipeline.
+- `.gitignore`: Specifies which files to ignore and save when updating the Git directory.
+- `src` directory:
+    - `.gitignore`: Functions similarly to the previous `.gitignore` file.
+    - `data_utils.py`: Contains Python functions to extract data from CSV files.
+    - `sql_utils.py`: Contains Python functions to load data into tables on AWS Redshift.
+    - `lambda_function.py`: Contains the lambda handler serving as the entry point and executing the code.
 
 ## Usage
+
 To run the project:
-1. open terminal.
-2. check for containers runnig on docker by the following command : docker ps -a.
-3. remove the existing containers by the following set of code: 
+1. Open the terminal.
+2. Check for running containers on Docker with `docker ps -a`.
+3. Remove existing containers with:
+    ```
     docker stop <container> <container>
     docker rm <container> <container>
-4. In the terminal run the following command to run the python code "py whyb_utils_postgres_guid.py"
-5. now log onto the database you created by inserting the following link your browser http://localhost:8080
-6. select a postgresql database for type.
-7. insert the following : 
-    password : password
-    username : postgres
-8. once you log in, go ahead and view the data by writing sql qurries.
+    ```
+4. Run the Python code with `py whyb_utils_postgres_guid.py`.
+5. Log into the database by visiting [http://localhost:8080](http://localhost:8080) in your browser.
+6. Select PostgreSQL as the database type.
+7. Enter the following credentials:
+    - Username: postgres
+    - Password: password
+8. Once logged in, you can view the data by writing SQL queries.
 
